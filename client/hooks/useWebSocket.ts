@@ -107,11 +107,14 @@ export function useWebSocket(options: UseWebSocketOptions = {}) {
       };
 
       ws.current.onerror = (error) => {
-        console.error("WebSocket error:", error);
+        console.warn("WebSocket error (development mode):", error);
         setConnectionStatus("error");
       };
     } catch (error) {
-      console.error("Failed to create WebSocket connection:", error);
+      console.warn(
+        "Failed to create WebSocket connection (development mode):",
+        error,
+      );
       setConnectionStatus("error");
     }
   };
