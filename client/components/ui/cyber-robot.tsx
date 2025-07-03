@@ -37,7 +37,7 @@ export default function CyberRobot({
       >
         {/* Shadow */}
         <div
-          className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-16 h-4 bg-black/30 rounded-full blur-sm"
+          className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-18 h-3 bg-black/30 rounded-full blur-sm"
           style={{
             animation: "shadow-pulse 3s ease-in-out infinite",
           }}
@@ -45,11 +45,11 @@ export default function CyberRobot({
 
         {/* Robot Body */}
         <div className="relative">
-          {/* Head - Very bulbous and egg-shaped like reference */}
+          {/* Head - Large and bulbous like reference */}
           <div
-            className="relative w-16 h-16 mx-auto mb-0 rounded-full bg-gradient-to-br from-white via-gray-50 to-gray-100"
+            className="relative w-20 h-18 mx-auto mb-1 rounded-full bg-gradient-to-br from-white via-gray-50 to-gray-100"
             style={{
-              transform: "translateZ(12px) scale(1, 1.1)",
+              transform: "translateZ(12px) scale(1, 1.15)",
               boxShadow:
                 "0 8px 20px rgba(0,0,0,0.4), inset 0 3px 0 rgba(255,255,255,0.9), inset 0 -3px 6px rgba(0,0,0,0.1)",
               border: "2px solid rgba(220,220,220,0.9)",
@@ -113,33 +113,33 @@ export default function CyberRobot({
             />
           </div>
 
-          {/* Body - Compact egg shape like reference */}
+          {/* Body - Compact and almost same width as head */}
           <div
-            className="relative w-16 h-18 mx-auto rounded-full bg-gradient-to-br from-white via-gray-50 to-gray-100"
+            className="relative w-18 h-16 mx-auto rounded-full bg-gradient-to-br from-white via-gray-50 to-gray-100"
             style={{
-              transform: "translateZ(10px) scale(1, 1.3)",
+              transform: "translateZ(10px) scale(1, 1.2)",
               boxShadow:
                 "0 10px 25px rgba(0,0,0,0.4), inset 0 3px 0 rgba(255,255,255,0.9), inset 0 -3px 6px rgba(0,0,0,0.1)",
               border: "2px solid rgba(220,220,220,0.9)",
             }}
           >
-            {/* Chest Panel - Circular like the reference */}
+            {/* Chest Panel - Large circular panel like reference */}
             <div
-              className="absolute top-3 left-1/2 transform -translate-x-1/2 w-10 h-10 rounded-full bg-gray-800 border-2 border-gray-600"
+              className="absolute top-2 left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full bg-gray-800 border-2 border-gray-600"
               style={{
                 boxShadow:
-                  "inset 0 0 12px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.3)",
+                  "inset 0 0 15px rgba(0,0,0,0.8), 0 0 10px rgba(0,0,0,0.3)",
               }}
             >
               {/* Inner Circle with Cyber Logo */}
               <div
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full border-2 border-cyber-cyan bg-gray-900"
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full border-2 border-cyber-cyan bg-gray-900"
                 style={{
                   boxShadow:
-                    "0 0 8px rgba(0,255,255,0.5), inset 0 0 4px rgba(0,255,255,0.2)",
+                    "0 0 10px rgba(0,255,255,0.6), inset 0 0 6px rgba(0,255,255,0.2)",
                 }}
               >
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xs text-cyber-cyan font-bold">
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-sm text-cyber-cyan font-bold">
                   ©
                 </div>
               </div>
@@ -156,10 +156,10 @@ export default function CyberRobot({
             />
           </div>
 
-          {/* Left Arm - Stubby and cylindrical like reference */}
+          {/* Left Arm - Very stubby like reference */}
           <div
             className={cn(
-              "absolute top-16 -left-5 w-3 h-7 rounded-full bg-gradient-to-b from-white via-gray-50 to-gray-150 border border-gray-300",
+              "absolute top-20 -left-6 w-4 h-6 rounded-full bg-gradient-to-b from-white via-gray-50 to-gray-150 border border-gray-300",
               isWaving && "origin-top",
             )}
             style={{
@@ -171,9 +171,9 @@ export default function CyberRobot({
                 "0 4px 8px rgba(0,0,0,0.4), inset 0 2px 0 rgba(255,255,255,0.9)",
             }}
           >
-            {/* Hand - Small and rounded */}
+            {/* Hand - Round like little mittens */}
             <div
-              className="absolute -bottom-1 -left-1 w-5 h-3 rounded-full bg-gradient-to-b from-gray-50 to-gray-200 border border-gray-300"
+              className="absolute -bottom-1 -left-1 w-6 h-4 rounded-full bg-gradient-to-b from-gray-50 to-gray-200 border border-gray-300"
               style={{
                 boxShadow:
                   "0 2px 4px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.8)",
@@ -183,7 +183,7 @@ export default function CyberRobot({
 
           {/* Right Arm */}
           <div
-            className="absolute top-16 -right-5 w-3 h-7 rounded-full bg-gradient-to-b from-white via-gray-50 to-gray-150 border border-gray-300"
+            className="absolute top-20 -right-6 w-4 h-6 rounded-full bg-gradient-to-b from-white via-gray-50 to-gray-150 border border-gray-300"
             style={{
               transform: "translateZ(6px)",
               boxShadow:
@@ -192,7 +192,7 @@ export default function CyberRobot({
           >
             {/* Hand */}
             <div
-              className="absolute -bottom-1 -right-1 w-5 h-3 rounded-full bg-gradient-to-b from-gray-50 to-gray-200 border border-gray-300"
+              className="absolute -bottom-1 -right-1 w-6 h-4 rounded-full bg-gradient-to-b from-gray-50 to-gray-200 border border-gray-300"
               style={{
                 boxShadow:
                   "0 2px 4px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.8)",
@@ -200,18 +200,18 @@ export default function CyberRobot({
             />
           </div>
 
-          {/* Legs - Short and stubby like reference */}
+          {/* Legs - Very short and stubby like reference */}
           <div
-            className="absolute top-26 left-5 w-3 h-6 rounded-full bg-gradient-to-b from-white via-gray-50 to-gray-150 border border-gray-300"
+            className="absolute top-32 left-6 w-4 h-5 rounded-full bg-gradient-to-b from-white via-gray-50 to-gray-150 border border-gray-300"
             style={{
               transform: "translateZ(7px)",
               boxShadow:
                 "0 4px 8px rgba(0,0,0,0.4), inset 0 2px 0 rgba(255,255,255,0.9)",
             }}
           >
-            {/* Foot - Rounded boot style */}
+            {/* Foot - Cute little boots */}
             <div
-              className="absolute -bottom-1 -left-1 w-5 h-2 rounded-full bg-gradient-to-b from-gray-100 to-gray-300 border border-gray-400"
+              className="absolute -bottom-1 -left-1 w-6 h-3 rounded-full bg-gradient-to-b from-gray-100 to-gray-300 border border-gray-400"
               style={{
                 boxShadow:
                   "0 2px 4px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.6)",
@@ -220,7 +220,7 @@ export default function CyberRobot({
           </div>
 
           <div
-            className="absolute top-26 right-5 w-3 h-6 rounded-full bg-gradient-to-b from-white via-gray-50 to-gray-150 border border-gray-300"
+            className="absolute top-32 right-6 w-4 h-5 rounded-full bg-gradient-to-b from-white via-gray-50 to-gray-150 border border-gray-300"
             style={{
               transform: "translateZ(7px)",
               boxShadow:
@@ -229,7 +229,7 @@ export default function CyberRobot({
           >
             {/* Foot */}
             <div
-              className="absolute -bottom-1 -right-1 w-5 h-2 rounded-full bg-gradient-to-b from-gray-100 to-gray-300 border border-gray-400"
+              className="absolute -bottom-1 -right-1 w-6 h-3 rounded-full bg-gradient-to-b from-gray-100 to-gray-300 border border-gray-400"
               style={{
                 boxShadow:
                   "0 2px 4px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.6)",
