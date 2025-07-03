@@ -100,7 +100,9 @@ export default function Index() {
           className={`${
             wsConnected
               ? "border-cyber-green text-cyber-green"
-              : "border-red-500 text-red-400"
+              : connectionStatus === "error"
+                ? "border-yellow-500 text-yellow-400"
+                : "border-red-500 text-red-400"
           } bg-cyber-bg-dark/90 backdrop-blur-sm`}
         >
           {wsConnected ? (
@@ -108,7 +110,11 @@ export default function Index() {
           ) : (
             <WifiOff className="h-3 w-3 mr-1" />
           )}
-          {wsConnected ? "REAL-TIME" : "OFFLINE"}
+          {wsConnected
+            ? "REAL-TIME"
+            : connectionStatus === "error"
+              ? "DEV MODE"
+              : "OFFLINE"}
         </Badge>
 
         {apiError && (
