@@ -6,6 +6,9 @@ import {
 } from "@/components/ui/cyber-card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import CyberProgressRing from "@/components/ui/cyber-progress-ring";
+import VulnCard from "@/components/ui/vuln-card";
+import CyberStatus from "@/components/ui/cyber-status";
 import { AIAnalysis, ScanResult, SeverityLevel } from "@shared/api";
 import {
   Brain,
@@ -14,6 +17,8 @@ import {
   Clock,
   TrendingUp,
   Target,
+  BarChart3,
+  Zap,
 } from "lucide-react";
 
 interface AIAnalysisProps {
@@ -79,44 +84,80 @@ export default function AIAnalysisComponent({
         </CyberCardHeader>
         <CyberCardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Overall Risk Score</span>
+            <div className="flex flex-col items-center space-y-4">
+              <CyberProgressRing
+                progress={analysis.riskScore}
+                size={140}
+                color={
+                  analysis.riskScore >= 80
+                    ? "red"
+                    : analysis.riskScore >= 60
+                      ? "purple"
+                      : "cyan"
+                }
+              >
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-white font-mono">
+                    {analysis.riskScore}
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    RISK SCORE
+                  </div>
+                </div>
+              </CyberProgressRing>
+
+              <div className="text-center space-y-2">
                 <Badge
                   variant="outline"
-                  className={`${getRiskLevelColor(analysis.riskScore)} border-current`}
+                  className={`${getRiskLevelColor(analysis.riskScore)} border-current text-lg px-4 py-2`}
                 >
-                  {getRiskLevelText(analysis.riskScore)}
+                  {getRiskLevelText(analysis.riskScore)} RISK
                 </Badge>
-              </div>
-              <div className="space-y-2">
-                <Progress
-                  value={analysis.riskScore}
-                  className={`h-4 ${getRiskLevelColor(analysis.riskScore)}`}
+                <CyberStatus
+                  status={
+                    analysis.riskScore >= 80
+                      ? "error"
+                      : analysis.riskScore >= 60
+                        ? "scanning"
+                        : "complete"
+                  }
+                  label="THREAT LEVEL"
                 />
-                <p className="text-2xl font-mono text-center text-white">
-                  {analysis.riskScore}/100
-                </p>
               </div>
             </div>
 
             <div className="space-y-4">
-              <h4 className="text-sm font-medium text-cyber-cyan">
-                Vulnerability Distribution
-              </h4>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="flex items-center gap-2">
+                <BarChart3 className="h-4 w-4 text-cyber-cyan" />
+                <h4 className="text-sm font-medium text-cyber-cyan">
+                  Vulnerability Distribution
+                </h4>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
                 {Object.entries(scanResult.stats).map(
                   ([severity, count]) =>
                     severity !== "total" && (
                       <div
                         key={severity}
-                        className={`p-2 rounded border ${severityColors[severity as SeverityLevel]} ${severityGlow[severity as SeverityLevel]}`}
+                        className={`p-3 rounded-lg border-2 transition-all hover:scale-105 ${severityColors[severity as SeverityLevel]} ${severityGlow[severity as SeverityLevel]}`}
                       >
-                        <div className="text-xs uppercase">{severity}</div>
-                        <div className="text-lg font-mono">{count}</div>
+                        <div className="text-xs uppercase font-bold mb-1">
+                          {severity}
+                        </div>
+                        <div className="text-2xl font-mono">{count}</div>
+                        <div className="w-full h-1 rounded mt-2 bg-current opacity-30" />
                       </div>
                     ),
                 )}
+              </div>
+
+              <div className="pt-2 border-t border-cyber-surface">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Total Issues:</span>
+                  <span className="text-cyber-cyan font-mono text-lg">
+                    {scanResult.stats.total}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -188,50 +229,31 @@ export default function AIAnalysisComponent({
       <CyberCard>
         <CyberCardHeader>
           <CyberCardTitle className="flex items-center gap-2">
-            <Clock className="h-5 w-5" />
+            <Zap className="h-5 w-5" />
             PRIORITY VULNERABILITIES
           </CyberCardTitle>
         </CyberCardHeader>
         <CyberCardContent>
-          <div className="space-y-3">
+          <div className="space-y-4">
             {analysis.prioritizedVulns.slice(0, 5).map((vuln, index) => (
-              <div
+              <VulnCard
                 key={vuln.id}
-                className={`p-4 rounded border ${severityColors[vuln.severity]} ${severityGlow[vuln.severity]}`}
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Badge
-                        variant="outline"
-                        className={severityColors[vuln.severity]}
-                      >
-                        {vuln.severity.toUpperCase()}
-                      </Badge>
-                      {vuln.cvss && (
-                        <span className="text-xs text-muted-foreground">
-                          CVSS: {vuln.cvss}
-                        </span>
-                      )}
-                    </div>
-                    <h4 className="font-medium text-white mb-1">
-                      {vuln.title}
-                    </h4>
-                    <p className="text-sm text-muted-foreground">
-                      {vuln.description}
-                    </p>
-                    <div className="flex items-center gap-2 mt-2">
-                      <span className="text-xs font-mono text-cyber-cyan">
-                        {vuln.url}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    #{index + 1}
-                  </div>
-                </div>
-              </div>
+                vulnerability={vuln}
+                isHighlighted={index === 0} // Highlight the most critical
+                className="transition-all hover:scale-[1.02]"
+              />
             ))}
+
+            {analysis.prioritizedVulns.length > 5 && (
+              <div className="text-center pt-4 border-t border-cyber-surface">
+                <Badge
+                  variant="outline"
+                  className="text-cyber-cyan border-cyber-cyan"
+                >
+                  +{analysis.prioritizedVulns.length - 5} MORE VULNERABILITIES
+                </Badge>
+              </div>
+            )}
           </div>
         </CyberCardContent>
       </CyberCard>
