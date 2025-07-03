@@ -26,24 +26,24 @@ function expressPlugin(): Plugin {
     apply: "serve", // Only apply during development (serve mode)
     configureServer(server) {
       try {
-        // Import and create the Express server
-        const { createExpressServer } = require("./server/index.ts");
-        const app = createExpressServer();
+        // Use simplified development server
+        const { createDevServer } = require("./server/dev-server.ts");
+        const app = createDevServer();
 
         // Add Express app as middleware to Vite dev server
         server.middlewares.use(app);
-        console.log("Express server loaded successfully");
+        console.log("Development server loaded successfully");
       } catch (error) {
-        console.error("Failed to load Express server:", error);
+        console.error("Failed to load development server:", error);
 
-        // Fallback - serve basic API endpoints
+        // Fallback - serve basic health endpoint
         server.middlewares.use("/api", (req, res, next) => {
           if (req.url === "/health") {
             res.writeHead(200, { "Content-Type": "application/json" });
             res.end(
               JSON.stringify({
-                status: "degraded",
-                error: "Express server failed to load",
+                status: "error",
+                error: "Development server failed to load",
                 message: error.message,
               }),
             );
@@ -52,7 +52,7 @@ function expressPlugin(): Plugin {
             res.end(
               JSON.stringify({
                 error: "Service temporarily unavailable",
-                message: "Express server failed to initialize",
+                message: "Development server failed to initialize",
               }),
             );
           }
