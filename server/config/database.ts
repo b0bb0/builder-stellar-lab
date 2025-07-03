@@ -12,9 +12,6 @@ if (!fs.existsSync(dbDir)) {
 
 export const db = new Database(dbPath);
 
-// Auto-initialize database when imported
-initializeDatabase();
-
 // Initialize database schema
 export function initializeDatabase() {
   try {
