@@ -118,7 +118,11 @@ export function createExpressServer() {
 export function createHttpServer() {
   // Initialize database
   console.log("Initializing database...");
-  initializeDatabase();
+  try {
+    initializeDatabase();
+  } catch (error) {
+    console.error("Database initialization failed, using mock data:", error);
+  }
 
   // Create Express app
   const app = createExpressServer();
