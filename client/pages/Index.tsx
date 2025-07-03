@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { ScanOptions, ScanResult, AIAnalysis } from "@shared/api";
 import Scanner from "@/components/Scanner";
+import ScannerDashboard from "@/components/ScannerDashboard";
 import ScanProgress from "@/components/ScanProgress";
 import AIAnalysisComponent from "@/components/AIAnalysis";
 import CyberBackground from "@/components/ui/cyber-background";
@@ -31,6 +32,9 @@ export default function Index() {
     connectionStatus,
     addScanListener,
     subscribeTo,
+    scanProgress,
+    scanPhase,
+    vulnerabilities,
   } = useScanWebSocket(currentScanId);
 
   // Subscribe to scan updates via WebSocket
@@ -129,7 +133,13 @@ export default function Index() {
 
       <div className="container mx-auto px-4 py-8 relative z-10">
         {appState === "scanner" && (
-          <Scanner onStartScan={handleStartScan} isScanning={isLoading} />
+          <ScannerDashboard
+            onStartScan={handleStartScan}
+            isScanning={isLoading}
+            scanProgress={scanProgress}
+            scanPhase={scanPhase}
+            vulnerabilityCount={vulnerabilities.length}
+          />
         )}
 
         {appState === "scanning" && currentScanId && (
