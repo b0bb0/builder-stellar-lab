@@ -20,32 +20,32 @@ const HolographicCard = React.forwardRef<HTMLDivElement, HolographicCardProps>(
   ) => {
     const variantStyles = {
       default:
-        "from-cyber-cyan/20 via-cyber-purple/20 to-cyber-pink/20 border-cyber-cyan/40",
+        "from-cyber-cyan/10 via-cyber-purple/10 to-cyber-pink/10 border-cyber-cyan/30",
       critical:
-        "from-red-500/30 via-red-400/20 to-pink-500/30 border-red-400/60",
+        "from-red-500/15 via-red-400/10 to-pink-500/15 border-red-400/40",
       warning:
-        "from-yellow-500/30 via-orange-400/20 to-red-500/30 border-yellow-400/60",
+        "from-yellow-500/15 via-orange-400/10 to-red-500/15 border-yellow-400/40",
       success:
-        "from-green-500/30 via-emerald-400/20 to-cyan-500/30 border-green-400/60",
+        "from-green-500/15 via-emerald-400/10 to-cyan-500/15 border-green-400/40",
     };
 
     const glowStyles = {
-      low: "shadow-[0_0_20px_rgba(0,255,255,0.1)]",
-      medium: "shadow-[0_0_40px_rgba(0,255,255,0.2)]",
-      high: "shadow-[0_0_60px_rgba(0,255,255,0.4)]",
+      low: "shadow-[0_0_8px_rgba(0,255,255,0.1)]",
+      medium: "shadow-[0_0_12px_rgba(0,255,255,0.15)]",
+      high: "shadow-[0_0_16px_rgba(0,255,255,0.2)]",
     };
 
     return (
       <div
         ref={ref}
         className={cn(
-          "relative rounded-xl p-6 backdrop-blur-md transition-all duration-500 hover:scale-[1.02]",
+          "relative rounded-xl p-6 backdrop-blur-sm transition-all duration-500 hover:scale-[1.01]",
           "bg-gradient-to-br",
           variantStyles[variant],
           glowStyles[glowIntensity],
-          "border border-opacity-40",
-          "before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-br before:from-white/10 before:via-transparent before:to-transparent before:opacity-0 before:transition-opacity before:duration-500 hover:before:opacity-100",
-          "after:absolute after:inset-0 after:rounded-xl after:bg-gradient-to-t after:from-transparent after:via-white/5 after:to-white/10 after:opacity-50",
+          "border border-opacity-60",
+          "before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-br before:from-white/5 before:via-transparent before:to-transparent before:opacity-0 before:transition-opacity before:duration-500 hover:before:opacity-100",
+          "after:absolute after:inset-0 after:rounded-xl after:bg-gradient-to-t after:from-transparent after:via-white/2 after:to-white/5 after:opacity-30",
           className,
         )}
         style={{
@@ -62,21 +62,21 @@ const HolographicCard = React.forwardRef<HTMLDivElement, HolographicCardProps>(
 
         {/* Holographic shimmer effect */}
         <div
-          className="absolute inset-0 rounded-xl opacity-30"
+          className="absolute inset-0 rounded-xl opacity-15"
           style={{
             background: `
               linear-gradient(
                 45deg,
-                transparent 30%,
-                rgba(255,255,255,0.2) 40%,
-                rgba(0,255,255,0.3) 50%,
-                rgba(255,0,255,0.3) 60%,
-                rgba(255,255,255,0.2) 70%,
-                transparent 80%
+                transparent 40%,
+                rgba(255,255,255,0.1) 45%,
+                rgba(0,255,255,0.15) 50%,
+                rgba(255,0,255,0.15) 55%,
+                rgba(255,255,255,0.1) 60%,
+                transparent 70%
               )
             `,
             backgroundSize: "200% 200%",
-            animation: "shimmer 3s ease-in-out infinite",
+            animation: "shimmer 4s ease-in-out infinite",
           }}
         />
       </div>

@@ -252,9 +252,7 @@ export default function ScannerDashboard({
       <div className="text-center space-y-4 relative z-10">
         <div className="flex items-center justify-center gap-3">
           <Shield className="h-10 w-10 text-cyber-cyan animate-neon-flicker" />
-          <h1 className="text-5xl font-bold neon-text text-cyber-cyan">
-            LUMINOUS FLOW
-          </h1>
+          <h1 className="text-5xl font-bold text-cyber-cyan">LUMINOUS FLOW</h1>
           <Shield className="h-10 w-10 text-cyber-cyan animate-neon-flicker" />
         </div>
 
@@ -299,7 +297,7 @@ export default function ScannerDashboard({
       >
         <div className="flex items-center gap-3 mb-4">
           <Target className="h-6 w-6 text-cyber-cyan" />
-          <h2 className="text-xl font-bold text-cyber-cyan neon-text">
+          <h2 className="text-xl font-bold text-cyber-cyan">
             TARGET ACQUISITION
           </h2>
         </div>
@@ -330,7 +328,7 @@ export default function ScannerDashboard({
       >
         <div className="flex items-center gap-3 mb-6">
           <Zap className="h-6 w-6 text-cyber-purple" />
-          <h2 className="text-xl font-bold text-cyber-purple neon-text">
+          <h2 className="text-xl font-bold text-cyber-purple">
             WEAPON SELECTION
           </h2>
         </div>
@@ -343,8 +341,8 @@ export default function ScannerDashboard({
                 relative p-4 rounded-lg border-2 transition-all duration-300 cursor-pointer
                 ${
                   tool.enabled
-                    ? "border-cyber-purple bg-purple-950/30 neon-border shadow-[0_0_20px_rgba(168,85,247,0.4)]"
-                    : "border-gray-600 bg-gray-900/50 hover:border-cyber-cyan/50"
+                    ? "border-cyber-purple bg-purple-950/20 border-2 shadow-[0_0_8px_rgba(168,85,247,0.2)]"
+                    : "border-gray-600 bg-gray-900/30 hover:border-cyber-cyan/50"
                 }
               `}
               onClick={() => handleToolToggle(tool.name, !tool.enabled)}
@@ -359,9 +357,7 @@ export default function ScannerDashboard({
                 />
                 <span
                   className={`font-bold ${
-                    tool.enabled
-                      ? "text-cyber-purple neon-text"
-                      : "text-gray-400"
+                    tool.enabled ? "text-cyber-purple" : "text-gray-400"
                   }`}
                 >
                   {tool.name}
@@ -392,7 +388,7 @@ export default function ScannerDashboard({
               className="mb-4"
             >
               <div className="text-center">
-                <div className="text-4xl font-bold text-cyber-cyan font-mono neon-text">
+                <div className="text-4xl font-bold text-cyber-cyan font-mono">
                   {Math.round(scanProgress)}%
                 </div>
                 <div className="text-xs text-muted-foreground uppercase tracking-wider">
@@ -402,7 +398,7 @@ export default function ScannerDashboard({
             </CyberProgressRing>
 
             <div className="text-center">
-              <div className="text-cyber-cyan text-lg font-bold mb-2 neon-text">
+              <div className="text-cyber-cyan text-lg font-bold mb-2">
                 {scanPhase}
               </div>
               <div className="text-cyber-purple text-sm">
@@ -415,7 +411,7 @@ export default function ScannerDashboard({
             variant="scan"
             size="lg"
             onClick={handleStartScan}
-            className="px-16 py-6 text-xl font-bold tracking-wider neon-border"
+            className="px-16 py-6 text-xl font-bold tracking-wider"
           >
             <Zap className="h-6 w-6 mr-3" />
             EXECUTE SCAN

@@ -44,23 +44,23 @@ export default function EmergencyAlert({
     warning: {
       primary: "text-yellow-400",
       secondary: "text-yellow-300",
-      glow: "shadow-[0_0_40px_rgba(234,179,8,0.6)]",
+      glow: "shadow-[0_0_12px_rgba(234,179,8,0.4)]",
       border: "border-yellow-400",
-      bg: "bg-yellow-500/10",
+      bg: "bg-yellow-500/8",
     },
     critical: {
       primary: "text-red-400",
       secondary: "text-red-300",
-      glow: "shadow-[0_0_40px_rgba(239,68,68,0.6)]",
+      glow: "shadow-[0_0_12px_rgba(239,68,68,0.4)]",
       border: "border-red-400",
-      bg: "bg-red-500/10",
+      bg: "bg-red-500/8",
     },
     emergency: {
       primary: "text-pink-400",
       secondary: "text-pink-300",
-      glow: "shadow-[0_0_40px_rgba(236,72,153,0.6)]",
+      glow: "shadow-[0_0_12px_rgba(236,72,153,0.4)]",
       border: "border-pink-400",
-      bg: "bg-pink-500/10",
+      bg: "bg-pink-500/8",
     },
   };
 
@@ -116,7 +116,7 @@ export default function EmergencyAlert({
                 style.primary,
               )}
               style={{
-                textShadow: `0 0 20px currentColor`,
+                textShadow: `0 0 4px currentColor`,
                 fontFamily: "monospace",
               }}
             >

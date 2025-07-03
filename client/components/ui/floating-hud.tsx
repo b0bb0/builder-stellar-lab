@@ -21,11 +21,11 @@ export default function FloatingHUD({
   const getStatusColor = (status?: string) => {
     switch (status) {
       case "warning":
-        return "border-yellow-400 text-yellow-400 shadow-[0_0_15px_rgba(234,179,8,0.3)]";
+        return "border-yellow-400 text-yellow-400 shadow-[0_0_6px_rgba(234,179,8,0.2)]";
       case "critical":
-        return "border-red-400 text-red-400 shadow-[0_0_15px_rgba(239,68,68,0.3)]";
+        return "border-red-400 text-red-400 shadow-[0_0_6px_rgba(239,68,68,0.2)]";
       default:
-        return "border-cyber-cyan text-cyber-cyan shadow-[0_0_15px_rgba(0,255,255,0.3)]";
+        return "border-cyber-cyan text-cyber-cyan shadow-[0_0_6px_rgba(0,255,255,0.2)]";
     }
   };
 
