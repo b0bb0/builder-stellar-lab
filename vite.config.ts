@@ -25,30 +25,39 @@ function expressPlugin(): Plugin {
     name: "express-plugin",
     apply: "serve", // Only apply during development (serve mode)
     configureServer(server) {
-      // Dynamically import to avoid issues during config loading
-      import("./server/index.js")
-        .then(({ createExpressServer }) => {
-          const app = createExpressServer();
-          // Add Express app as middleware to Vite dev server
-          server.middlewares.use(app);
-        })
-        .catch((error) => {
-          console.error("Failed to load Express server:", error);
-          // Fallback - serve a simple health check
-          server.middlewares.use("/api", (req, res, next) => {
-            if (req.url === "/health") {
-              res.writeHead(200, { "Content-Type": "application/json" });
-              res.end(
-                JSON.stringify({
-                  status: "ok",
-                  error: "Express server not loaded",
-                }),
-              );
-            } else {
-              next();
-            }
-          });
+      try {
+        // Import and create the Express server
+        const { createExpressServer } = require("./server/index.ts");
+        const app = createExpressServer();
+
+        // Add Express app as middleware to Vite dev server
+        server.middlewares.use(app);
+        console.log("Express server loaded successfully");
+      } catch (error) {
+        console.error("Failed to load Express server:", error);
+
+        // Fallback - serve basic API endpoints
+        server.middlewares.use("/api", (req, res, next) => {
+          if (req.url === "/health") {
+            res.writeHead(200, { "Content-Type": "application/json" });
+            res.end(
+              JSON.stringify({
+                status: "degraded",
+                error: "Express server failed to load",
+                message: error.message,
+              }),
+            );
+          } else {
+            res.writeHead(503, { "Content-Type": "application/json" });
+            res.end(
+              JSON.stringify({
+                error: "Service temporarily unavailable",
+                message: "Express server failed to initialize",
+              }),
+            );
+          }
         });
+      }
     },
   };
 }
