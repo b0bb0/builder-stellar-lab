@@ -87,11 +87,19 @@ export default function Scanner({ onStartScan, isScanning }: ScannerProps) {
       return;
     }
 
+    // Validate URL format
+    try {
+      new URL(targetUrl);
+    } catch {
+      alert("Please enter a valid URL (e.g., https://example.com)");
+      return;
+    }
+
     onStartScan({
       target: { url: targetUrl },
       tools: enabledTools,
       severity: ["critical", "high", "medium", "low", "info"],
-      timeout: 30000,
+      timeout: 300, // 5 minutes in seconds
     });
   };
 
