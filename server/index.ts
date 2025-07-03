@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
+import { startScan, getScanStatus } from "./routes/scanner";
+import { getAIAnalysis } from "./routes/ai-analysis";
 
 export function createServer() {
   const app = express();
@@ -16,6 +18,13 @@ export function createServer() {
   });
 
   app.get("/api/demo", handleDemo);
+
+  // Vulnerability Scanner routes
+  app.post("/api/scanner/start", startScan);
+  app.get("/api/scanner/status/:scanId", getScanStatus);
+
+  // AI Analysis routes
+  app.get("/api/ai-analysis/:scanId", getAIAnalysis);
 
   return app;
 }
