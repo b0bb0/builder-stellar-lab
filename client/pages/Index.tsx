@@ -3,6 +3,7 @@ import { ScanOptions, ScanResult, AIAnalysis, ScanResponse } from "@shared/api";
 import Scanner from "@/components/Scanner";
 import ScanProgress from "@/components/ScanProgress";
 import AIAnalysisComponent from "@/components/AIAnalysis";
+import CyberBackground from "@/components/ui/cyber-background";
 import { NeonButton } from "@/components/ui/neon-button";
 import { RotateCcw } from "lucide-react";
 
@@ -79,8 +80,9 @@ export default function Index() {
   };
 
   return (
-    <div className="min-h-screen cyber-grid">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen relative">
+      <CyberBackground />
+      <div className="container mx-auto px-4 py-8 relative z-10">
         {appState === "scanner" && (
           <Scanner onStartScan={handleStartScan} isScanning={false} />
         )}
