@@ -6,12 +6,21 @@ import {
   CyberCardTitle,
 } from "@/components/ui/cyber-card";
 import { NeonButton } from "@/components/ui/neon-button";
-import { Input } from "@/components/ui/input";
+import { CyberInput } from "@/components/ui/cyber-input";
+import CyberTerminal from "@/components/ui/cyber-terminal";
+import CyberStatus from "@/components/ui/cyber-status";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { ScanOptions, ScanTool } from "@shared/api";
-import { Shield, Target, Zap, AlertTriangle } from "lucide-react";
+import {
+  Shield,
+  Target,
+  Zap,
+  AlertTriangle,
+  Activity,
+  Cpu,
+} from "lucide-react";
 
 interface ScannerProps {
   onStartScan: (options: ScanOptions) => void;
@@ -55,6 +64,14 @@ export default function Scanner({ onStartScan, isScanning }: ScannerProps) {
   const [targetUrl, setTargetUrl] = useState("https://target.example.com");
   const [tools, setTools] = useState<ScanTool[]>(AVAILABLE_TOOLS);
 
+  const terminalLines = [
+    "Initializing LUMINOUS FLOW v2.1.0...",
+    "Loading vulnerability templates...",
+    "Nuclei engine: READY",
+    "AI analysis module: ONLINE",
+    "Awaiting target acquisition...",
+  ];
+
   const handleToolToggle = (toolName: string, enabled: boolean) => {
     setTools(
       tools.map((tool) =>
@@ -90,14 +107,10 @@ export default function Scanner({ onStartScan, isScanning }: ScannerProps) {
         <p className="text-cyber-purple text-sm tracking-widest uppercase">
           [CLASSIFIED] SECURITY ASSESSMENT PROTOCOL
         </p>
-        <div className="flex items-center justify-center gap-4 text-sm">
-          <Badge
-            variant="outline"
-            className="border-cyber-green text-cyber-green"
-          >
-            AKTIV
-          </Badge>
-          <span className="text-muted-foreground">SYSTEM STATUS</span>
+        <div className="flex items-center justify-center gap-6 text-sm">
+          <CyberStatus status="online" label="CORE SYSTEM" />
+          <CyberStatus status="online" label="AI MODULE" />
+          <CyberStatus status="online" label="NUCLEI ENGINE" />
         </div>
       </div>
 
@@ -110,20 +123,23 @@ export default function Scanner({ onStartScan, isScanning }: ScannerProps) {
           </CyberCardTitle>
         </CyberCardHeader>
         <CyberCardContent>
-          <div className="space-y-2">
+          <div className="space-y-3">
             <Label
               htmlFor="target"
-              className="text-cyber-cyan text-sm font-medium"
+              className="text-cyber-cyan text-sm font-medium tracking-wide"
             >
               TARGET URL
             </Label>
-            <Input
+            <CyberInput
               id="target"
+              variant="target"
               value={targetUrl}
               onChange={(e) => setTargetUrl(e.target.value)}
               placeholder="https://target.example.com"
-              className="bg-cyber-surface border-glow-cyan font-mono text-cyber-cyan"
               disabled={isScanning}
+              showStatusLine={!isScanning}
+              statusText="TARGET LOCKED"
+              isScanning={isScanning}
             />
           </div>
         </CyberCardContent>
@@ -176,29 +192,42 @@ export default function Scanner({ onStartScan, isScanning }: ScannerProps) {
         </CyberCardContent>
       </CyberCard>
 
+      {/* System Terminal */}
+      <CyberCard>
+        <CyberCardHeader>
+          <CyberCardTitle className="flex items-center gap-2 text-sm">
+            <Cpu className="h-4 w-4" />
+            SYSTEM TERMINAL
+          </CyberCardTitle>
+        </CyberCardHeader>
+        <CyberCardContent>
+          <CyberTerminal lines={terminalLines} autoType={!isScanning} />
+        </CyberCardContent>
+      </CyberCard>
+
       {/* Debug Info */}
       <CyberCard>
         <CyberCardHeader>
           <CyberCardTitle className="flex items-center gap-2 text-sm">
-            <AlertTriangle className="h-4 w-4" />
-            DEBUG INFO:
+            <Activity className="h-4 w-4" />
+            SCAN PARAMETERS
           </CyberCardTitle>
         </CyberCardHeader>
         <CyberCardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-            <div>
-              <span className="text-muted-foreground">Selected Tools:</span>
-              <p className="text-cyber-cyan">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="p-3 rounded bg-cyber-surface border border-cyber-cyan/30">
+              <div className="text-xs text-cyber-cyan mb-1">Selected Tools</div>
+              <div className="text-lg font-mono text-white">
                 {tools.filter((t) => t.enabled).length}
-              </p>
+              </div>
             </div>
-            <div>
-              <span className="text-muted-foreground">Target Type:</span>
-              <p className="text-cyber-cyan">Web Application</p>
+            <div className="p-3 rounded bg-cyber-surface border border-cyber-purple/30">
+              <div className="text-xs text-cyber-purple mb-1">Target Type</div>
+              <div className="text-lg font-mono text-white">Web App</div>
             </div>
-            <div>
-              <span className="text-muted-foreground">Mode:</span>
-              <p className="text-cyber-cyan">Standard Scan</p>
+            <div className="p-3 rounded bg-cyber-surface border border-cyber-green/30">
+              <div className="text-xs text-cyber-green mb-1">Scan Mode</div>
+              <div className="text-lg font-mono text-white">Standard</div>
             </div>
           </div>
         </CyberCardContent>
