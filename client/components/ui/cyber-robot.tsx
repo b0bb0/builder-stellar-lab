@@ -13,9 +13,9 @@ export default function CyberRobot({
   className,
 }: CyberRobotProps) {
   const sizeClasses = {
-    sm: "scale-50",
-    md: "scale-75",
-    lg: "scale-100",
+    sm: "scale-40",
+    md: "scale-60",
+    lg: "scale-80",
   };
 
   return (
@@ -45,23 +45,24 @@ export default function CyberRobot({
 
         {/* Robot Body */}
         <div className="relative">
-          {/* Head - More bulbous and rounded */}
+          {/* Head - Very bulbous and egg-shaped like reference */}
           <div
-            className="relative w-14 h-14 mx-auto mb-1 rounded-full bg-gradient-to-br from-white via-gray-100 to-gray-200"
+            className="relative w-16 h-16 mx-auto mb-0 rounded-full bg-gradient-to-br from-white via-gray-50 to-gray-100"
             style={{
-              transform: "translateZ(12px)",
+              transform: "translateZ(12px) scale(1, 1.1)",
               boxShadow:
-                "0 6px 16px rgba(0,0,0,0.3), inset 0 2px 0 rgba(255,255,255,0.8), inset 0 -2px 4px rgba(0,0,0,0.1)",
-              border: "1px solid rgba(200,200,200,0.8)",
+                "0 8px 20px rgba(0,0,0,0.4), inset 0 3px 0 rgba(255,255,255,0.9), inset 0 -3px 6px rgba(0,0,0,0.1)",
+              border: "2px solid rgba(220,220,220,0.9)",
             }}
           >
-            {/* Dark Visor - Large rounded screen */}
+            {/* Dark Visor - Very large like reference */}
             <div
-              className="absolute top-2 left-2 right-2 bottom-4 rounded-full bg-gray-900 border border-gray-700 overflow-hidden"
+              className="absolute top-1 left-1 right-1 bottom-2 rounded-full bg-gray-900 border-2 border-gray-800 overflow-hidden"
               style={{
-                background: "radial-gradient(circle at center, #1a1a1a, #000)",
+                background:
+                  "radial-gradient(circle at 30% 30%, #2a2a2a, #000000)",
                 boxShadow:
-                  "inset 0 0 20px rgba(0,255,255,0.2), 0 0 10px rgba(0,0,0,0.8)",
+                  "inset 0 0 25px rgba(0,255,255,0.3), 0 0 15px rgba(0,0,0,0.9)",
               }}
             >
               {/* Glowing Cyan Eyes - Larger and more prominent */}
@@ -112,14 +113,14 @@ export default function CyberRobot({
             />
           </div>
 
-          {/* Body - More egg-shaped and rounded */}
+          {/* Body - Compact egg shape like reference */}
           <div
-            className="relative w-18 h-20 mx-auto rounded-full bg-gradient-to-br from-white via-gray-100 to-gray-200"
+            className="relative w-16 h-18 mx-auto rounded-full bg-gradient-to-br from-white via-gray-50 to-gray-100"
             style={{
-              transform: "translateZ(10px) scale(1, 1.2)",
+              transform: "translateZ(10px) scale(1, 1.3)",
               boxShadow:
-                "0 8px 20px rgba(0,0,0,0.3), inset 0 2px 0 rgba(255,255,255,0.8), inset 0 -2px 4px rgba(0,0,0,0.1)",
-              border: "1px solid rgba(200,200,200,0.8)",
+                "0 10px 25px rgba(0,0,0,0.4), inset 0 3px 0 rgba(255,255,255,0.9), inset 0 -3px 6px rgba(0,0,0,0.1)",
+              border: "2px solid rgba(220,220,220,0.9)",
             }}
           >
             {/* Chest Panel - Circular like the reference */}
@@ -155,10 +156,10 @@ export default function CyberRobot({
             />
           </div>
 
-          {/* Left Arm - More cylindrical */}
+          {/* Left Arm - Stubby and cylindrical like reference */}
           <div
             className={cn(
-              "absolute top-14 -left-6 w-4 h-10 rounded-full bg-gradient-to-b from-white via-gray-100 to-gray-200 border border-gray-400",
+              "absolute top-16 -left-5 w-3 h-7 rounded-full bg-gradient-to-b from-white via-gray-50 to-gray-150 border border-gray-300",
               isWaving && "origin-top",
             )}
             style={{
@@ -167,71 +168,71 @@ export default function CyberRobot({
                 ? "wave-arm 1.5s ease-in-out infinite"
                 : "none",
               boxShadow:
-                "0 3px 6px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.8)",
+                "0 4px 8px rgba(0,0,0,0.4), inset 0 2px 0 rgba(255,255,255,0.9)",
             }}
           >
-            {/* Hand - More rounded */}
+            {/* Hand - Small and rounded */}
             <div
-              className="absolute -bottom-2 -left-1 w-6 h-4 rounded-full bg-gradient-to-b from-gray-100 to-gray-300 border border-gray-400"
+              className="absolute -bottom-1 -left-1 w-5 h-3 rounded-full bg-gradient-to-b from-gray-50 to-gray-200 border border-gray-300"
               style={{
                 boxShadow:
-                  "0 2px 4px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.6)",
+                  "0 2px 4px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.8)",
               }}
             />
           </div>
 
           {/* Right Arm */}
           <div
-            className="absolute top-14 -right-6 w-4 h-10 rounded-full bg-gradient-to-b from-white via-gray-100 to-gray-200 border border-gray-400"
+            className="absolute top-16 -right-5 w-3 h-7 rounded-full bg-gradient-to-b from-white via-gray-50 to-gray-150 border border-gray-300"
             style={{
               transform: "translateZ(6px)",
               boxShadow:
-                "0 3px 6px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.8)",
+                "0 4px 8px rgba(0,0,0,0.4), inset 0 2px 0 rgba(255,255,255,0.9)",
             }}
           >
             {/* Hand */}
             <div
-              className="absolute -bottom-2 -right-1 w-6 h-4 rounded-full bg-gradient-to-b from-gray-100 to-gray-300 border border-gray-400"
+              className="absolute -bottom-1 -right-1 w-5 h-3 rounded-full bg-gradient-to-b from-gray-50 to-gray-200 border border-gray-300"
               style={{
                 boxShadow:
-                  "0 2px 4px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.6)",
+                  "0 2px 4px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.8)",
               }}
             />
           </div>
 
-          {/* Legs - More cylindrical and cute */}
+          {/* Legs - Short and stubby like reference */}
           <div
-            className="absolute top-28 left-4 w-4 h-8 rounded-full bg-gradient-to-b from-white via-gray-100 to-gray-200 border border-gray-400"
+            className="absolute top-26 left-5 w-3 h-6 rounded-full bg-gradient-to-b from-white via-gray-50 to-gray-150 border border-gray-300"
             style={{
               transform: "translateZ(7px)",
               boxShadow:
-                "0 3px 6px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.8)",
+                "0 4px 8px rgba(0,0,0,0.4), inset 0 2px 0 rgba(255,255,255,0.9)",
             }}
           >
-            {/* Foot - More rounded like boots */}
+            {/* Foot - Rounded boot style */}
             <div
-              className="absolute -bottom-2 -left-1 w-6 h-3 rounded-full bg-gradient-to-b from-gray-200 to-gray-400 border border-gray-500"
+              className="absolute -bottom-1 -left-1 w-5 h-2 rounded-full bg-gradient-to-b from-gray-100 to-gray-300 border border-gray-400"
               style={{
                 boxShadow:
-                  "0 2px 4px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.4)",
+                  "0 2px 4px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.6)",
               }}
             />
           </div>
 
           <div
-            className="absolute top-28 right-4 w-4 h-8 rounded-full bg-gradient-to-b from-white via-gray-100 to-gray-200 border border-gray-400"
+            className="absolute top-26 right-5 w-3 h-6 rounded-full bg-gradient-to-b from-white via-gray-50 to-gray-150 border border-gray-300"
             style={{
               transform: "translateZ(7px)",
               boxShadow:
-                "0 3px 6px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.8)",
+                "0 4px 8px rgba(0,0,0,0.4), inset 0 2px 0 rgba(255,255,255,0.9)",
             }}
           >
             {/* Foot */}
             <div
-              className="absolute -bottom-2 -right-1 w-6 h-3 rounded-full bg-gradient-to-b from-gray-200 to-gray-400 border border-gray-500"
+              className="absolute -bottom-1 -right-1 w-5 h-2 rounded-full bg-gradient-to-b from-gray-100 to-gray-300 border border-gray-400"
               style={{
                 boxShadow:
-                  "0 2px 4px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.4)",
+                  "0 2px 4px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.6)",
               }}
             />
           </div>

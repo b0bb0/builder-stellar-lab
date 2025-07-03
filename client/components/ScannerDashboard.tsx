@@ -430,12 +430,12 @@ export default function ScannerDashboard({
             </NeonButton>
 
             {/* Robot Speech Bubble */}
-            <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-cyber-surface border border-cyber-cyan rounded-lg px-3 py-1 z-10">
-              <div className="text-xs text-cyber-cyan font-mono">
-                Ready to scan!
+            <div className="absolute -top-14 left-1/2 transform -translate-x-1/2 bg-gray-900/90 border border-cyber-cyan rounded-lg px-3 py-2 z-10 backdrop-blur-sm">
+              <div className="text-xs text-cyber-cyan font-mono animate-pulse">
+                Ready to hack! 🤖
               </div>
               <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full">
-                <div className="w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-cyber-cyan"></div>
+                <div className="w-0 h-0 border-l-3 border-r-3 border-t-3 border-transparent border-t-cyber-cyan"></div>
               </div>
             </div>
           </div>
