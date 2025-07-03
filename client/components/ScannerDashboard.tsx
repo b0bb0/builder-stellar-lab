@@ -5,6 +5,7 @@ import EmergencyAlert from "@/components/ui/emergency-alert";
 import { NeonButton } from "@/components/ui/neon-button";
 import { CyberInput } from "@/components/ui/cyber-input";
 import CyberProgressRing from "@/components/ui/cyber-progress-ring";
+import CyberRobot from "@/components/ui/cyber-robot";
 import { Badge } from "@/components/ui/badge";
 import { ScanOptions, ScanTool } from "@shared/api";
 import {
@@ -407,15 +408,37 @@ export default function ScannerDashboard({
             </div>
           </div>
         ) : (
-          <NeonButton
-            variant="scan"
-            size="lg"
-            onClick={handleStartScan}
-            className="px-16 py-6 text-xl font-bold tracking-wider"
-          >
-            <Zap className="h-6 w-6 mr-3" />
-            EXECUTE SCAN
-          </NeonButton>
+          <div className="relative">
+            {/* 3D Robot standing on button */}
+            <div className="absolute -top-20 left-1/2 transform -translate-x-1/2 z-20">
+              <CyberRobot
+                isWaving={true}
+                size="md"
+                className="drop-shadow-lg"
+              />
+            </div>
+
+            {/* Execute Button */}
+            <NeonButton
+              variant="scan"
+              size="lg"
+              onClick={handleStartScan}
+              className="px-16 py-6 text-xl font-bold tracking-wider relative"
+            >
+              <Zap className="h-6 w-6 mr-3" />
+              EXECUTE SCAN
+            </NeonButton>
+
+            {/* Robot Speech Bubble */}
+            <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-cyber-surface border border-cyber-cyan rounded-lg px-3 py-1 z-10">
+              <div className="text-xs text-cyber-cyan font-mono">
+                Ready to scan!
+              </div>
+              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full">
+                <div className="w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-cyber-cyan"></div>
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </div>
