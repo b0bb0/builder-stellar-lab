@@ -1,33 +1,62 @@
-import { useState } from "react";
-import { ScanOptions, ScanResult, AIAnalysis, ScanResponse } from "@shared/api";
+import { useState, useEffect } from "react";
+import { ScanOptions, ScanResult, AIAnalysis } from "@shared/api";
 import Scanner from "@/components/Scanner";
 import ScanProgress from "@/components/ScanProgress";
 import AIAnalysisComponent from "@/components/AIAnalysis";
 import CyberBackground from "@/components/ui/cyber-background";
 import { NeonButton } from "@/components/ui/neon-button";
-import { RotateCcw } from "lucide-react";
+import { useScanLifecycle } from "@/hooks/useScannerAPI";
+import { useScanWebSocket } from "@/hooks/useWebSocket";
+import { RotateCcw, Wifi, WifiOff } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 type AppState = "scanner" | "scanning" | "results";
 
 export default function Index() {
   const [appState, setAppState] = useState<AppState>("scanner");
-  const [currentScanId, setCurrentScanId] = useState<string | null>(null);
-  const [scanResult, setScanResult] = useState<ScanResult | null>(null);
-  const [aiAnalysis, setAiAnalysis] = useState<AIAnalysis | null>(null);
+  const {
+    currentScanId,
+    scanResult,
+    aiAnalysis,
+    startNewScan,
+    checkScanStatus,
+    stopCurrentScan,
+    resetScan,
+    error: apiError,
+    isLoading,
+  } = useScanLifecycle();
+
+  const {
+    isConnected: wsConnected,
+    connectionStatus,
+    addScanListener,
+    subscribeTo,
+  } = useScanWebSocket(currentScanId);
+
+  // Subscribe to scan updates via WebSocket
+  useEffect(() => {
+    if (!currentScanId || !wsConnected) return;
+
+    const cleanup = addScanListener(currentScanId, (message) => {
+      switch (message.type) {
+        case "scan_completed":
+          handleScanComplete();
+          break;
+        case "scan_failed":
+          console.error("Scan failed:", message.data.error);
+          alert(`Scan failed: ${message.data.error}`);
+          setAppState("scanner");
+          resetScan();
+          break;
+      }
+    });
+
+    return cleanup;
+  }, [currentScanId, wsConnected]);
 
   const handleStartScan = async (options: ScanOptions) => {
     try {
-      // Start the scan
-      const response = await fetch("/api/scanner/start", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(options),
-      });
-
-      const data = (await response.json()) as ScanResponse;
-      setCurrentScanId(data.scanId);
+      const scanId = await startNewScan(options);
       setAppState("scanning");
     } catch (error) {
       console.error("Error starting scan:", error);
@@ -35,63 +64,87 @@ export default function Index() {
     }
   };
 
-  const handleScanComplete = async (result: ScanResult) => {
-    setScanResult(result);
-
-    // Get AI analysis
+  const handleScanComplete = async () => {
     try {
-      const response = await fetch(`/api/ai-analysis/${result.id}`);
-      const analysis = (await response.json()) as AIAnalysis;
-      setAiAnalysis(analysis);
+      const statusResponse = await checkScanStatus();
+      if (statusResponse) {
+        setAppState("results");
+      }
     } catch (error) {
-      console.error("Error fetching AI analysis:", error);
-      // Create mock analysis if API fails
-      const mockAnalysis: AIAnalysis = {
-        summary:
-          "The target application shows several security vulnerabilities that require immediate attention. Critical issues include potential SQL injection vectors and exposed sensitive endpoints. The overall security posture needs significant improvement.",
-        riskScore: 75,
-        recommendations: [
-          "Implement input validation and parameterized queries to prevent SQL injection",
-          "Enable proper authentication and authorization mechanisms",
-          "Update all third-party dependencies to latest secure versions",
-          "Implement proper error handling to prevent information disclosure",
-          "Add rate limiting and DDoS protection mechanisms",
-        ],
-        prioritizedVulns: result.vulnerabilities.slice(0, 5),
-        riskFactors: [
-          "Multiple high-severity vulnerabilities detected",
-          "Outdated software components identified",
-          "Insufficient access controls observed",
-          "Potential data exposure vectors found",
-        ],
-        estimatedFixTime: "2-3 weeks",
-      };
-      setAiAnalysis(mockAnalysis);
+      console.error("Error fetching scan results:", error);
     }
-
-    setAppState("results");
   };
 
   const handleNewScan = () => {
     setAppState("scanner");
-    setCurrentScanId(null);
-    setScanResult(null);
-    setAiAnalysis(null);
+    resetScan();
+  };
+
+  const handleStopScan = async () => {
+    try {
+      await stopCurrentScan();
+      setAppState("scanner");
+    } catch (error) {
+      console.error("Error stopping scan:", error);
+    }
   };
 
   return (
     <div className="min-h-screen relative">
       <CyberBackground />
+
+      {/* Connection Status Bar */}
+      <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
+        <Badge
+          variant="outline"
+          className={`${
+            wsConnected
+              ? "border-cyber-green text-cyber-green"
+              : "border-red-500 text-red-400"
+          } bg-cyber-bg-dark/90 backdrop-blur-sm`}
+        >
+          {wsConnected ? (
+            <Wifi className="h-3 w-3 mr-1" />
+          ) : (
+            <WifiOff className="h-3 w-3 mr-1" />
+          )}
+          {wsConnected ? "REAL-TIME" : "OFFLINE"}
+        </Badge>
+
+        {apiError && (
+          <Badge
+            variant="outline"
+            className="border-red-500 text-red-400 bg-cyber-bg-dark/90 backdrop-blur-sm"
+          >
+            API ERROR
+          </Badge>
+        )}
+      </div>
+
       <div className="container mx-auto px-4 py-8 relative z-10">
         {appState === "scanner" && (
-          <Scanner onStartScan={handleStartScan} isScanning={false} />
+          <Scanner onStartScan={handleStartScan} isScanning={isLoading} />
         )}
 
         {appState === "scanning" && currentScanId && (
-          <ScanProgress
-            scanId={currentScanId}
-            onScanComplete={handleScanComplete}
-          />
+          <div className="space-y-6">
+            <ScanProgress
+              scanId={currentScanId}
+              onScanComplete={handleScanComplete}
+            />
+
+            {/* Stop Scan Button */}
+            <div className="flex justify-center">
+              <NeonButton
+                variant="destructive"
+                onClick={handleStopScan}
+                disabled={isLoading}
+                className="flex items-center gap-2"
+              >
+                STOP SCAN
+              </NeonButton>
+            </div>
+          </div>
         )}
 
         {appState === "results" && scanResult && aiAnalysis && (
@@ -101,8 +154,8 @@ export default function Index() {
               analysis={aiAnalysis}
             />
 
-            {/* New Scan Button */}
-            <div className="flex justify-center pt-8">
+            {/* Action Buttons */}
+            <div className="flex justify-center gap-4 pt-8">
               <NeonButton
                 variant="outline"
                 onClick={handleNewScan}
@@ -111,6 +164,16 @@ export default function Index() {
                 <RotateCcw className="h-4 w-4" />
                 NEW SCAN
               </NeonButton>
+            </div>
+          </div>
+        )}
+
+        {/* Loading Overlay */}
+        {isLoading && appState === "scanner" && (
+          <div className="fixed inset-0 bg-cyber-bg-dark/50 backdrop-blur-sm flex items-center justify-center z-40">
+            <div className="text-center space-y-4">
+              <div className="animate-spin w-8 h-8 border-2 border-cyber-cyan border-t-transparent rounded-full mx-auto" />
+              <p className="text-cyber-cyan">Initializing scan...</p>
             </div>
           </div>
         )}
