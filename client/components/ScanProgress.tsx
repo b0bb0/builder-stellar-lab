@@ -6,9 +6,12 @@ import {
   CyberCardTitle,
 } from "@/components/ui/cyber-card";
 import { Progress } from "@/components/ui/progress";
+import CyberProgressRing from "@/components/ui/cyber-progress-ring";
+import CyberTerminal from "@/components/ui/cyber-terminal";
+import CyberStatus from "@/components/ui/cyber-status";
 import { Badge } from "@/components/ui/badge";
 import { ScanResult } from "@shared/api";
-import { Activity, Clock, Target, AlertTriangle } from "lucide-react";
+import { Activity, Clock, Target, AlertTriangle, Zap, Cpu } from "lucide-react";
 
 interface ScanProgressProps {
   scanId: string;
@@ -23,6 +26,9 @@ export default function ScanProgress({
   const [currentPhase, setCurrentPhase] = useState("Initializing...");
   const [elapsedTime, setElapsedTime] = useState(0);
   const [vulnerabilitiesFound, setVulnerabilitiesFound] = useState(0);
+  const [terminalLogs, setTerminalLogs] = useState<string[]>([
+    "Initializing scan sequence...",
+  ]);
 
   useEffect(() => {
     const startTime = Date.now();
@@ -48,6 +54,12 @@ export default function ScanProgress({
         const phaseProgress = 100 / phases.length;
         const phaseStart = currentPhaseIndex * phaseProgress;
 
+        // Add terminal log for phase start
+        setTerminalLogs((prev) => [
+          ...prev,
+          `[${new Date().toLocaleTimeString()}] ${phase.phase}`,
+        ]);
+
         let phaseElapsed = 0;
         const phaseTimer = setInterval(() => {
           phaseElapsed += 100;
@@ -57,9 +69,31 @@ export default function ScanProgress({
           );
           setProgress(phaseStart + phaseProgressPercent);
 
-          // Simulate finding vulnerabilities
-          if (currentPhaseIndex >= 2 && Math.random() > 0.8) {
-            setVulnerabilitiesFound((prev) => prev + 1);
+          // Simulate finding vulnerabilities with terminal logs
+          if (currentPhaseIndex >= 2 && Math.random() > 0.9) {
+            const newVulnCount = vulnerabilitiesFound + 1;
+            setVulnerabilitiesFound(newVulnCount);
+            const vulnTypes = [
+              "SQL Injection",
+              "XSS",
+              "Directory Traversal",
+              "IDOR",
+              "Info Disclosure",
+            ];
+            const vulnType =
+              vulnTypes[Math.floor(Math.random() * vulnTypes.length)];
+            setTerminalLogs((prev) => [
+              ...prev,
+              `[ALERT] ${vulnType} detected - ID: ${newVulnCount}`,
+            ]);
+          }
+
+          // Add periodic status logs
+          if (phaseElapsed % 2000 === 0) {
+            setTerminalLogs((prev) => [
+              ...prev,
+              `[INFO] Progress: ${Math.round(phaseStart + phaseProgressPercent)}% - ${Math.floor(phaseElapsed / 1000)}s elapsed`,
+            ]);
           }
 
           if (phaseElapsed >= phase.duration) {
@@ -141,15 +175,32 @@ export default function ScanProgress({
           </CyberCardTitle>
         </CyberCardHeader>
         <CyberCardContent className="space-y-6">
-          {/* Progress Bar */}
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm">
-              <span className="text-cyber-cyan">{currentPhase}</span>
-              <span className="text-muted-foreground">
-                {Math.round(progress)}%
-              </span>
+          {/* Progress Ring */}
+          <div className="flex flex-col items-center space-y-4">
+            <CyberProgressRing
+              progress={progress}
+              size={160}
+              color="cyan"
+              className="mb-4"
+            >
+              <div className="text-center">
+                <div className="text-3xl font-bold text-cyber-cyan font-mono">
+                  {Math.round(progress)}%
+                </div>
+                <div className="text-xs text-muted-foreground">COMPLETE</div>
+              </div>
+            </CyberProgressRing>
+
+            <div className="text-center">
+              <div className="text-cyber-cyan text-sm font-medium mb-1">
+                {currentPhase}
+              </div>
+              <CyberStatus
+                status="scanning"
+                label="ACTIVE SCAN"
+                showPulse={true}
+              />
             </div>
-            <Progress value={progress} className="h-3 bg-cyber-surface" />
           </div>
 
           {/* Stats Grid */}
@@ -209,6 +260,23 @@ export default function ScanProgress({
               ))}
             </div>
           </div>
+        </CyberCardContent>
+      </CyberCard>
+
+      {/* Live Terminal */}
+      <CyberCard>
+        <CyberCardHeader>
+          <CyberCardTitle className="flex items-center gap-2">
+            <Cpu className="h-5 w-5" />
+            SCAN TERMINAL
+          </CyberCardTitle>
+        </CyberCardHeader>
+        <CyberCardContent>
+          <CyberTerminal
+            lines={terminalLogs.slice(-8)} // Show last 8 logs
+            autoType={false}
+            className="h-48 overflow-y-auto"
+          />
         </CyberCardContent>
       </CyberCard>
     </div>
